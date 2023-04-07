@@ -18,7 +18,8 @@ export const GenerateChat = async (query: string) => {
   });
   if (!response || typeof response === undefined) return "";
   if (!("data" in response && "choices" in response.data)) return "";
-  return typeof response !== undefined ? response.data?.choices[0].text : "";
+  const choice = response.data?.choices[0];
+  return choice?.text ?? "";
 };
 
 export const chatRouter = createTRPCRouter({
