@@ -4,4 +4,9 @@
 
 body {
   @apply text-slate-100;
+  font-family: 'SourceCode Pro', sans-serif;
+}
+
+label {
+  @apply text-slate-200;
 }
