@@ -8,9 +8,11 @@ import { getNextMealQuery } from "~/utils/chatQuery";
 import UserSelectionGroup, { type SelectionsObject } from "~/components/UserSelections";
 import ChatWindowComponent from "~/components/ChatWindow";
 import Footer from "~/components/Footer";
+import LoadingSpinner from "~/components/LoadingSpinner";
 
 const Home: NextPage = () => {
-  const user = useUser();
+  const { user, isLoaded: userLoaded, isSignedIn } = useUser();
+  // const user = useUser();
   const [chatLog, setChatLog] = useState<{
     type: string;
     text: string;
@@ -50,7 +52,7 @@ const Home: NextPage = () => {
     return !hasEmptyValue;
   }, [selections]);
 
-  const { data, isLoading, refetch } = api.chat.generateChat.useQuery({
+  const { data, refetch } = api.chat.generateChat.useQuery({
     query: finalQuery,
   }, {
     enabled: false, // disable for initial render
@@ -100,35 +102,50 @@ const Home: NextPage = () => {
       ) : (
         <main className="flex min-h-screen overflow-y-auto flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            {!!user.isSignedIn && <div className="text-white"><SignOutButton /></div>}
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
-              {!user.isSignedIn && <SignInButton />}
-            </h1>
-            {!!user.isSignedIn && (
+            {userLoaded ? (
               <>
-                <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">Hello, friend</h1>
-                <h3 className="text-xl font-bold tracking-tight text-gray-200">
-                  We are here to help you pick your next meal, <br />without you thinking about it
-                </h3>
+                {!!isSignedIn && <div className="text-white"><SignOutButton /></div>}
+                {!isSignedIn && (
+                  <div className="flex flex-col justify-center items-center">
+                    <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">Welcome to Pick-my-Meal</h1>
+                    <h2 className="font-medium text-2xl text-blue-600 dark:text-blue-500 hover:underline mt-5">
+                      <SignInButton />
+                    </h2>
+                  </div>
+                )}
+                {!!isSignedIn && (
+                  <>
+                    <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">Hello, friend</h1>
+                    <h3 className="text-xl font-bold tracking-tight text-gray-200">
+                      We are here to help you pick your next meal, <br />without you thinking about it
+                    </h3>
+                    {isSignedIn && (
+                      <>
+                        <div className="container flex flex-col items-center justify-center gap-8 px-4 pb-4">
+                          <UserSelectionGroup sendSelections={handleSelections} />
+                        </div>
+                        {loading ? (
+                          <div className="animate-pulse bg-[#2e026d] text-white p-4 rounded-lg shadow-lg">
+                            Loading...
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => handleSubmit()}
+                            className="bg-[#2e026d] text-white p-4 rounded-lg shadow-lg hover:bg-[#15162c] mb-4"
+                            disabled={!isValidQuery}
+                          >
+                            Pick my meal
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
               </>
+            ) : (
+              <LoadingSpinner />
             )}
           </div>
-          <div className="container flex flex-col items-center justify-center gap-8 px-4 pb-4">
-            <UserSelectionGroup sendSelections={handleSelections} />
-          </div>
-          {loading ? (
-            <div className="animate-pulse bg-[#2e026d] text-white p-4 rounded-lg shadow-lg">
-              Loading...
-            </div>
-          ) : (
-            <button
-              onClick={() => handleSubmit()}
-              className="bg-[#2e026d] text-white p-4 rounded-lg shadow-lg hover:bg-[#15162c] mb-4"
-              disabled={!isValidQuery}
-            >
-              Pick my meal
-            </button>
-          )}
         </main>
       )}
       <Footer />
