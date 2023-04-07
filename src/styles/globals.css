@@ -10,3 +10,9 @@ body {
 label {
   @apply text-slate-200;
 }
+
+.start-over-btn {
+  @apply absolute;
+  top: 1rem;
+  left: 2rem;
+}

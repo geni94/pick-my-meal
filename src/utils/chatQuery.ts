@@ -14,8 +14,12 @@ export const getNextMealQuery = (params: MealQueryParams) => {
       .map((meal) => meal.name)
       .join(', ')} for my today meals.`;
   }
-  if (goal) {
-    query += ` My goal is to get ${goal}.`;
+  if (goal || (userParams && userParams.objective)) {
+    const g = userParams?.objective || '';
+    query += ` My goal is to get ${goal || g}.`;
+  }
+  if (userParams && userParams.lifeType) {
+    query += ` I live a ${userParams.lifeType} lifestyle.`;
   }
   if (userParams)
     query += ` I am ${userParams.age || 0} years old, ${userParams.height} ${userParams.heightUnit} tall and ${userParams.weight} ${userParams.weightUnit} heavy.`;

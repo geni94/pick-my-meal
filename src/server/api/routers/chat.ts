@@ -5,7 +5,7 @@ import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
 
 const openai = new OpenAIApi(
   new Configuration({
-    apiKey: "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",
+    apiKey: process.env.OPENAI_KEY,
   })
 );
 
@@ -13,7 +13,7 @@ export const GenerateChat = async (query: string, premium = false) => {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: query,
-    temperature: 0.7,
+    temperature: 0.9,
     max_tokens: premium ? 512 : 256,
   });
   if (!response || typeof response === undefined) return "";
