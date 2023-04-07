@@ -18,7 +18,7 @@ export const getNextMealQuery = (params: MealQueryParams) => {
     query += ` My goal is to get ${goal}.`;
   }
   if (userParams)
-    query += ` I am ${userParams.age || 0} years old, ${userParams.height} tall and ${userParams.weight} heavy.`;
+    query += ` I am ${userParams.age || 0} years old, ${userParams.height} ${userParams.heightUnit} tall and ${userParams.weight} ${userParams.weightUnit} heavy.`;
   if (ethics) {
     query += ` I am ${ethics}.`;
   }

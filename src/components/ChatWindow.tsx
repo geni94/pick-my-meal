@@ -21,7 +21,7 @@ const ChatWindowComponent = ({ chatLog, sendNewMessage }: PropTypes) => {
   // };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <div className="flex flex-col h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] p-4 leading-4">
       <div className="flex-1 p-4 overflow-y-auto">
         {chatLog.map((message, index) => (
           <div key={index} className={`flex ${message.type === 'bot' ? 'justify-start' : 'justify-end'} mb-4`}>
@@ -38,12 +38,12 @@ const ChatWindowComponent = ({ chatLog, sendNewMessage }: PropTypes) => {
           <input
             type="text"
             placeholder="Type your message here"
-            className="flex-1 py-2 px-4 rounded-full bg-gray-200"
+            className="flex-1 py-2 px-4 rounded-full bg-gray-200 text-slate-700"
             value={inputText}
             onChange={(event) => setInputText(event.target.value)}
           />
           <button
-            className="ml-4 px-4 py-2 rounded-full bg-blue-500 text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="ml-4 px-4 py-2 rounded-full bg-blue-500 text-slate-200 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!inputText}
             onClick={() => {
               const message = { type: 'user', text: inputText };

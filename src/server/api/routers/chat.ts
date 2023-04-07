@@ -1,7 +1,7 @@
 // make a request to openai to get a response
 import { z } from 'zod';
 import { Configuration, OpenAIApi } from 'openai';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, privateProcedure, publicProcedure } from '../trpc';
 
 const openai = new OpenAIApi(
   new Configuration({
@@ -9,12 +9,12 @@ const openai = new OpenAIApi(
   })
 );
 
-export const GenerateChat = async (query: string) => {
+export const GenerateChat = async (query: string, premium = false) => {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: query,
     temperature: 0.7,
-    max_tokens: 256,
+    max_tokens: premium ? 512 : 256,
   });
   if (!response || typeof response === undefined) return "";
   if (!("data" in response && "choices" in response.data)) return "";
@@ -28,6 +28,13 @@ export const chatRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { query } = input;
       const response = await GenerateChat(query);
+      return response;
+    }),
+  premiumGenerateChat: privateProcedure
+    .input(z.object({ query: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { query } = input;
+      const response = await GenerateChat(query, true);
       return response;
     }),
 });

@@ -52,7 +52,7 @@ const Home: NextPage = () => {
     return !hasEmptyValue;
   }, [selections]);
 
-  const { data, refetch } = api.chat.generateChat.useQuery({
+  const { refetch } = api.chat.premiumGenerateChat.useQuery({
     query: finalQuery,
   }, {
     enabled: false, // disable for initial render
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
     }[];
     setLoading(true);
     try {
-      await refetch();
+      const { data } = await refetch();
       setChatLog([...allChat, { type: 'bot', text: data as string }]);
       setShowConvo(true);
     } catch (error) {
@@ -89,10 +89,10 @@ const Home: NextPage = () => {
       {showConvo ? (
         <>
           <button
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+            className="position-absolute py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
             onClick={() => setShowConvo(false)}
           >
-            Start over
+            Start over 🗑️
           </button>
           <ChatWindowComponent
             chatLog={chatLog}
