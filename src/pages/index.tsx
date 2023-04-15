@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
-import Head from "next/head";
 import { useState, useMemo } from "react";
 import { SignOutButton, SignInButton, useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
@@ -83,11 +82,6 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Pick-my-Meal 🤖</title>
-        <meta name="description" content="Pick my meal app, built with T3 stack and leveraging ChatGPT." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       {showConvo ? (
         <>
           <button
