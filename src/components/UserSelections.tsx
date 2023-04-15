@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import AutocompleteInput from '~/components/MealsAutcomplete';
+import { type Meal } from '~/services/UsfdaMeals';
 export interface SelectionsObject {
   age: string;
   gender: string;
@@ -9,6 +10,7 @@ export interface SelectionsObject {
   heightUnit: string;
   lifeType: string;
   objective: string;
+  lastMeals: Meal[];
 }
 
 const UserSelectionGroup = ({
@@ -24,7 +26,7 @@ const UserSelectionGroup = ({
   const [heightUnit, setHeightUnit] = useState('cm');
   const [lifeType, setLifeType] = useState('active');
   const [objective, setObjective] = useState('loseWeight');
-  const [meals, setMeals] = useState([]);
+  const [meals, setMeals] = useState<Meal[]>([]);
 
   const [genderSelections] = useState([
     'female', 'male', 'nonbinary'
@@ -40,8 +42,9 @@ const UserSelectionGroup = ({
       heightUnit,
       lifeType,
       objective,
+      lastMeals: meals,
     });
-  }, [age, gender, weight, weightUnit, height, heightUnit, lifeType, objective]);
+  }, [age, gender, weight, weightUnit, height, heightUnit, lifeType, objective, meals]);
 
   return (
     <div className="flex flex-col space-y-4 text-black">
@@ -152,11 +155,18 @@ const UserSelectionGroup = ({
           </select>
         </div>
       </div>
-      <div className="flex flex-col p-5 leading-5">
-        <h3 className="text-xl font-bold tracking-tight text-gray-200">
-          You can insert up to 3 meals that you&apos;ve had last
-        </h3>
-        <AutocompleteInput />
+      <div className="flex flex-col leading-5">
+        <br/>
+        <h2 className="text-xl font-bold tracking-tight text-gray-200">
+          You can insert up to 3 meals that you&apos;ve had today, or last:
+        </h2>
+        <br/>
+        <AutocompleteInput
+          sendSelectedMeals={(meals: Meal[]) => {
+            console.log('selected meals:::');
+            setMeals(meals);
+          }}
+        />
       </div>
     </div>
   );

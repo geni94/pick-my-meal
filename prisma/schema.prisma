@@ -17,6 +17,21 @@ model User {
     email     String   @unique
     name      String?
     meals     Meal[]
+    userParams  UserParams?
+}
+
+model UserParams {
+  id           String   @id @default(cuid())
+  weight       Float
+  height       Float
+  heightUnits  String
+  weightUnits  String
+  age          Int
+  gender       String
+  objective    String
+  lifeStyle    String
+  user         User?    @relation(fields: [userId], references: [id])
+  userId       String   @unique
 }
 
 model Meal {

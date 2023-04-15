@@ -6,8 +6,8 @@ export const getNextMealQuery = (params: MealQueryParams) => {
   let query = 'I am hungry.';
   if (lastMeals) {
     query += ` I had ${lastMeals
-      .map((meal) => meal.name)
-      .join(', ')} for my last meals.`;
+      .map((meal) => 'description' in meal ? meal.description : meal.name)
+      .join(', ')} as my meals for today.`;
   }
   if (todayMeals) {
     query += ` I had ${todayMeals

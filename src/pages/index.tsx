@@ -28,6 +28,7 @@ const Home: NextPage = () => {
     gender: '',
     lifeType: '',
     objective: '',
+    lastMeals: [],
   });
 
   const finalQuery: string = useMemo(() => {
@@ -42,6 +43,7 @@ const Home: NextPage = () => {
         lifeType: selections.lifeType,
         gender: selections.gender,
       },
+      lastMeals: selections.lastMeals,
     });
   }, [selections]);
 
