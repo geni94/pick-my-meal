@@ -12,7 +12,7 @@ import LoadingSpinner from "~/components/LoadingSpinner";
 
 const Home: NextPage = () => {
   const { user, isLoaded: userLoaded, isSignedIn } = useUser();
-  // const user = useUser();
+
   const [chatLog, setChatLog] = useState<{
     type: string;
     text: string;
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             {userLoaded ? (
               <>
-                {!!isSignedIn && <div className="text-white"><SignOutButton /></div>}
+                {!!isSignedIn && <div className="signout-btn text-white"><SignOutButton /></div>}
                 {!isSignedIn && (
                   <div className="flex flex-col justify-center items-center">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">Welcome to Pick-my-Meal</h1>
@@ -121,7 +121,10 @@ const Home: NextPage = () => {
                     </h3>
                     {isSignedIn && (
                       <>
-                        <div className="container flex flex-col items-center justify-center gap-8 px-4 pb-4">
+                        <div className="container flex flex-col items-center justify-center gap-8 pb-4">
+                          <h3 className="text-xl font-bold tracking-tight text-gray-200">
+                            Tell us a little about yourself.
+                          </h3>
                           <UserSelectionGroup sendSelections={handleSelections} />
                         </div>
                         {loading ? (

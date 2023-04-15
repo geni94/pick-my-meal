@@ -7,6 +7,10 @@ body {
   font-family: 'SourceCode Pro', sans-serif;
 }
 
+.w-fit-content {
+  width: fit-content !important;
+}
+
 label {
   @apply text-slate-200;
 }
@@ -15,4 +19,13 @@ label {
   @apply absolute;
   top: 1rem;
   left: 2rem;
+}
+
+.signout-btn {
+  @apply bg-[#2e026d] text-white p-4 rounded-lg shadow-lg hover:bg-[#15162c] cursor-pointer;
+}
+
+.dropdown-wrapper {
+  @apply absolute;
+  top: 26px;
 }

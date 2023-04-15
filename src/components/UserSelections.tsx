@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import AutocompleteInput from '~/components/MealsAutcomplete';
 export interface SelectionsObject {
   age: string;
   gender: string;
@@ -24,6 +24,7 @@ const UserSelectionGroup = ({
   const [heightUnit, setHeightUnit] = useState('cm');
   const [lifeType, setLifeType] = useState('active');
   const [objective, setObjective] = useState('loseWeight');
+  const [meals, setMeals] = useState([]);
 
   const [genderSelections] = useState([
     'female', 'male', 'nonbinary'
@@ -150,6 +151,12 @@ const UserSelectionGroup = ({
             <option value="getCut">Get Cut</option>
           </select>
         </div>
+      </div>
+      <div className="flex flex-col p-5 leading-5">
+        <h3 className="text-xl font-bold tracking-tight text-gray-200">
+          You can insert up to 3 meals that you&apos;ve had last
+        </h3>
+        <AutocompleteInput />
       </div>
     </div>
   );
