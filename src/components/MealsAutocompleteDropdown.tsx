@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useOnClickOutside } from "~/hooks/useOnClickOutside";
 import { useDebounce } from "~/hooks/useDebounce";
 import { type Meal } from "~/services/UsfdaMeals";
 
@@ -7,12 +8,16 @@ const MealDropComponent = ({
   onSelectMeal,
   handleSearch,
   mealData,
+  onClose,
 }: {
   mealSuggestions: Meal[],
   onSelectMeal: (idx: number, value: Meal['description']) => void,
   handleSearch: (value: string) => void,
   mealData?: Meal,
+  onClose?: () => void,
 }) => {
+  const ref = useRef(null);
+
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
@@ -22,11 +27,21 @@ const MealDropComponent = ({
   }, [debouncedSearch]);
 
   useEffect(() => {
-    return () => setSearch('');
+    return () => {
+      setSearch('');
+    };
   }, []);
 
+  useOnClickOutside(ref, () => setOpen(false));
+  useEffect(() => {
+    if (onClose && !open) {
+      setSearch('');
+      onClose();
+    }
+  }, [open]);
+ 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         id="dropdownSearchButton"
         onClick={() => setOpen(!open)}
@@ -56,7 +71,7 @@ const MealDropComponent = ({
               />
             </div>
           </div>
-          <ul className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+          <ul className={`${mealSuggestions.length > 0 ? 'h-48' : 'h-16'} px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200`} aria-labelledby="dropdownSearchButton">
             {mealSuggestions.map((meal) => (
               <li
                 key={`${meal.fdcId}-${meal.description}-span`}

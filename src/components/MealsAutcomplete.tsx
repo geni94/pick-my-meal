@@ -33,11 +33,14 @@ const AutocompleteInput = ({
       return newMeals;
     });
   };
+  const clearData = () => {
+    setSuggestions(() => []);
+  };
 
   useEffect(() => {
     return () => {
       setMeals(DEFAULT_MEALS);
-      setSuggestions([]);
+      clearData();
     }
   }, []);
 
@@ -54,6 +57,7 @@ const AutocompleteInput = ({
             handleMealChange(0, value);
           }}
           mealData={meal}
+          onClose={clearData}
         />
       ))}
     </div>
